@@ -32,10 +32,17 @@ pub struct Config {
     pub print_chunk_info: bool,
     pub upload_directories: bool,
     pub print_only_id: bool,
+    pub encrypt: bool,
 }
 
 pub async fn upload(config: Config) -> Result<(), Error> {
     let hub = hub_helper::get_hub().await.map_err(Error::Hub)?;
+
+    // if encrypt is true, print encryption key and exit
+    if config.encrypt {
+        println!("encrypt");
+        return Ok(());
+    }
 
     let delegate_config = UploadDelegateConfig {
         chunk_size: config.chunk_size.clone(),

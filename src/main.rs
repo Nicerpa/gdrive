@@ -212,6 +212,10 @@ enum FileCommand {
         /// Print only id of file/folder
         #[arg(long, default_value_t = false)]
         print_only_id: bool,
+
+        /// Encrypt file before uploading
+        #[arg(long, default_value_t = false)]
+        encrypt: bool,
     },
 
     /// Update file. This will create a new version of the file. The older versions will typically be kept for 30 days.
@@ -533,6 +537,7 @@ async fn main() {
                     print_chunk_errors,
                     print_chunk_info,
                     print_only_id,
+                    encrypt,
                 } => {
                     // fmt
                     files::upload(files::upload::Config {
@@ -544,6 +549,7 @@ async fn main() {
                         print_chunk_info,
                         upload_directories: recursive,
                         print_only_id,
+                        encrypt,
                     })
                     .await
                     .unwrap_or_else(handle_error)
