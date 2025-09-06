@@ -317,6 +317,29 @@ enum FileCommand {
         #[arg(long)]
         overwrite: bool,
     },
+
+    /// Sync a Google Drive folder with a local folder
+    Sync {
+        /// Id of the Drive folder to sync
+        // #[arg(long, value_name = "DRIVE_FOLDER_ID")]
+        drive_folder_id: String,
+
+        /// Path to the local folder to sync with
+        // #[arg(long, value_name = "LOCAL_PATH")]
+        local_folder: PathBuf,
+
+        /// Direction of sync: "down" (Drive to local), "up" (local to Drive), or "both"
+        #[arg(long, default_value_t = String::from("down"))]
+        direction: String,
+
+        /// Overwrite existing files
+        #[arg(long, default_value_t = false)]
+        overwrite: bool,
+
+        /// Sync recursively
+        #[arg(long, default_value_t = true)]
+        recursive: bool,
+    },
 }
 
 #[derive(Subcommand)]
@@ -656,6 +679,20 @@ async fn main() {
                     })
                     .await
                     .unwrap_or_else(handle_error)
+                }
+
+                FileCommand::Sync {
+                    drive_folder_id,
+                    local_folder,
+                    direction,
+                    overwrite,
+                    recursive,
+                } => {
+                    // TODO: Implement sync logic between Drive and local folder
+                    println!(
+                        "Syncing Drive folder '{}' with local folder '{:?}' (direction: {}, overwrite: {}, recursive: {})",
+                        drive_folder_id, local_folder, direction, overwrite, recursive
+                    );
                 }
             }
         }
